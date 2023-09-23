@@ -6,7 +6,6 @@
 
 namespace tk
 {
-
     template <typename T>
     struct Array
     {
@@ -15,8 +14,32 @@ namespace tk
             return _top;
         }
 
+        // Ensures capacity is target size if smaller
+        void Resize( IAllocator *alloc, size_t target_size )
+        {
+            if (_capacity < target_size) {
+                _grow_to_capacity( alloc, target_size );
+            }
+        }
+
+        T Pop() {
+            size_t ndx = _top;
+            _top--;
+            return _elems[ndx];
+
+        }
+
         uint32_t Capacity() const {
             return _capacity;
+        }
+
+        void Clear() {
+            _top = 0;
+        }
+
+        void ClearZero() {
+            _top = 0;
+            memset( _elems, 0, sizeof(T) * _capacity );
         }
 
         // Adds an item and return its index, growing the array if needed
@@ -30,20 +53,33 @@ namespace tk
             return ndx;
         }
 
+        T& operator[]( int index ) {
+            return _elems[index];
+        }
+
+        T& operator[]( int index ) const {
+            return _elems[index];
+        }
 
 
         Array() : _elems(nullptr), _top(0), _capacity(0) {}
 
         void _grow( IAllocator *alloc ) {
-
             // TODO: better resize strategy
+            size_t grow_capacity;
             if (_capacity == 0) {
-                _capacity = 8;
+                grow_capacity = 8;
             } else if (_capacity <= 1024) {
-                _capacity *= 2;
+                grow_capacity = _capacity * 2;
             } else {
-                _capacity = _capacity + 1024;
+                grow_capacity = _capacity + 1024;
             }
+            _grow_to_capacity( alloc, grow_capacity );
+        }
+
+        void _grow_to_capacity( IAllocator *alloc, size_t grow_capacity ) {
+
+            _capacity = grow_capacity;
             _elems = (T*)realloc( _elems, sizeof(T) * _capacity );
         }
 
