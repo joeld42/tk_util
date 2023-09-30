@@ -14,8 +14,14 @@ namespace tk
             return _top;
         }
 
+        void SetLength(size_t target_len, IAllocator* alloc)
+        {
+            Resize(target_len, alloc);
+            _top = target_len;
+        }
+
         // Ensures capacity is target size if smaller
-        void Resize( IAllocator *alloc, size_t target_size )
+        void Resize( size_t target_size, IAllocator* alloc )
         {
             if (_capacity < target_size) {
                 _grow_to_capacity( alloc, target_size );
