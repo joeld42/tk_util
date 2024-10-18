@@ -90,7 +90,7 @@ tk::Array<PaletteEntry> make_palette(SimpleImage img, int targetNum, tk::IAlloca
     int iter = 0;
     int imgsz = img.width * img.height;
     int* lastbucket = (int*)alloc->alloc(sizeof(int) * imgsz, 0L, __FILE__, __LINE__); // todo need alloc macros
-    while (iter < 100) {
+    while (iter < 1000) {
         
 
         // Clear the palette
@@ -240,8 +240,8 @@ int main( int argc, const char **argv )
     // DBG
     //srcImage = "c:\\stuff\\sunset.png";
     //srcImage = "c:\\stuff\\colorwheel.png";
-    //numColors = 8;
-    //srcImage = "c:\\stuff\\bike2.png";
+    //numColors = 32;
+    //srcImage = "c:\\stuff\\brite.png";
 
     // Assumes image ends in ".png"
     char* lutImage = (char*)malloc(strlen(srcImage) + 4);

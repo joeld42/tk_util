@@ -1,3 +1,5 @@
+#include <stdint.h>
+#include <assert.h>
 
 // In-place, fixed length array.
 namespace tk {
@@ -33,7 +35,7 @@ namespace tk {
         }
 
         int Add( const T &item ) {
-            // TODO: assert (_top < CAPACITY)
+            assert (_top < CAPACITY);
 
             uint32_t ndx = _top;
             _elems[_top++] = item;

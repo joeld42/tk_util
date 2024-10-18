@@ -9,6 +9,14 @@ namespace tk
     template <typename T>
     struct Array
     {
+
+        // This is just passed along to the allocator, can be used for tracing
+        // or categorizing allocations
+        void SetAllocTag( uint64_t tag )
+        {
+            _alloctag = tag;
+        }
+
         // Returns the length of the array
         uint32_t Length() const {
             return _top;
@@ -67,8 +75,13 @@ namespace tk
             return _elems[index];
         }
 
-
         Array() : _elems(nullptr), _top(0), _capacity(0) {}
+
+        void Free( IAllocator *alloc )
+        {
+            TK_FREE( alloc, _elems, alloctag );
+            _elems = nullptr;
+        }
 
         void _grow( IAllocator *alloc ) {
             // TODO: better resize strategy
@@ -86,12 +99,13 @@ namespace tk
         void _grow_to_capacity( IAllocator *alloc, size_t grow_capacity ) {
 
             _capacity = grow_capacity;
-            _elems = (T*)realloc( _elems, sizeof(T) * _capacity );
+            _elems = (T*)TK_REALLOC( alloc, _elems, sizeof(T) * _capacity, _alloctag );
         }
 
         T *_elems;
         size_t _top;
         size_t _capacity;
+        uint64_t _alloctag;
 
     };
 

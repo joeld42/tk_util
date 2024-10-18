@@ -8,7 +8,8 @@ add_executable( tkutil_unittest
                     tk_array.h
                     tk_alloc.h
                     tk_alloc.cpp
-                    tkutil_unittest.cpp )
+                    tkutil_unittest.cpp
+                    tk_slotlist.h)
 
 
 add_executable( kmeans_palette
