@@ -30,6 +30,7 @@ namespace tk
         T &LookupRef(Handle h);
         void Update(Handle h, const T& data);
         bool Validate(Handle h);
+        void Clear();
 
     private:
 
@@ -61,11 +62,8 @@ namespace tk
         _storage = (T*)TK_ALLOC( alloc, sizeof(T) * _capacity, alloctag );
         _alloctag = alloctag;
 
-        for (int i=0; i < _capacity; i++) {
-            _entries[i].u.data_index = i + 1; // next item in freelist
-            _entries[i].u.version = 0; // initial version
-        }
-        _entries[capacity - 1].h = ~0;
+        // Setup the freelist
+        Clear();
     }
 
     template <typename T>
@@ -73,6 +71,16 @@ namespace tk
     {
         TK_FREE( alloc, _entries, alloctag );
         TK_FREE( alloc, _storage, alloctag );
+    }
+
+    template <typename T>
+    void SlotList<T>::Clear( )
+    {
+        for (int i=0; i < _capacity; i++) {
+            _entries[i].u.data_index = i + 1; // next item in freelist
+            _entries[i].u.version = 0; // initial version
+        }
+        _entries[_capacity - 1].h = ~0;
     }
 
     template <typename T>

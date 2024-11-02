@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.0)
 include_directories( "." )
 include_directories( "c:/Toolkits/stb/" )
 
+
+
 add_executable( tkutil_unittest
                     tk_array.h
                     tk_alloc.h
