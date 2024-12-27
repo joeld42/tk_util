@@ -80,15 +80,17 @@ namespace tk
             _entries[i].u.data_index = i + 1; // next item in freelist
             _entries[i].u.version = 0; // initial version
         }
-        _entries[_capacity - 1].h = ~0;
     }
 
     template <typename T>
     Handle SlotList<T>::AddItem( const T &data )
     {
-        if (_freelist == ~0) {
+        printf("Additem Freelist is now %d sentinal %d\n", _freelist, ~0 );
+        if (_freelist == _capacity) {
+            printf("TODO: Grow List\n" );
+            fflush(stdout );
             assert(0);
-            // TODO: Grow list
+            // TODO: Grow list dynamically
         }
 
         // Pop element off the free list
