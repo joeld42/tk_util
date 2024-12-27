@@ -85,7 +85,6 @@ namespace tk
     template <typename T>
     Handle SlotList<T>::AddItem( const T &data )
     {
-        printf("Additem Freelist is now %d sentinal %d\n", _freelist, ~0 );
         if (_freelist == _capacity) {
             printf("TODO: Grow List\n" );
             fflush(stdout );
