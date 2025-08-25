@@ -22,7 +22,7 @@ int main( int argc, const char **argv )
 
 
     // Slotlist test
-    tk::SlotList table = tk::SlotList<int>( alloc, 256 );
+    tk::SlotList<int> table = tk::SlotList<int>( alloc, 256 );
 
     tk::Handle h0 = table.AddItem(  99 );
     tk::Handle h1 = table.AddItem( 100 );
@@ -61,6 +61,12 @@ int main( int argc, const char **argv )
     printf("Notice that the index was re-used, but count incremented!\n");
     printf("This is how lifetime is tracked for unique elements while reusing the same memory.\n");
     printf("\n---\n\n");
+
+
+    // Check that clear resets the freelist properly
+    table.Clear();
+    assert( table.CountUsage() == 0 );
+
 
     table.Free( alloc );
     return 1;

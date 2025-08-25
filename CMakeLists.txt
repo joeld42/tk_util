@@ -1,5 +1,5 @@
 project(tk_util)
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 
 include_directories( "." )
 include_directories( "c:/Toolkits/stb/" )
@@ -18,4 +18,4 @@ add_executable( kmeans_palette
                     tk_array.h
                     tk_alloc.h
                     tools/kmeans_palette.cpp
-                    tk_alloc.cpp )                    
+                    tk_alloc.cpp )

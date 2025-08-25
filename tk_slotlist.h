@@ -32,6 +32,8 @@ namespace tk
         bool Validate(Handle h);
         void Clear();
 
+        size_t CountUsage();
+
     private:
 
         union Entry
@@ -80,14 +82,28 @@ namespace tk
             _entries[i].u.data_index = i + 1; // next item in freelist
             _entries[i].u.version = 0; // initial version
         }
+        _freelist = 0;
+    }
+
+    // This is slow because it has to walk the freelist. Just use for diagnostic.
+    template <typename T>
+    size_t SlotList<T>::CountUsage()
+    {
+        size_t usage = _capacity;
+        uint64_t index = _freelist;
+        while( index < _capacity) {
+            usage -= 1;
+            index = _entries[index].u.data_index;
+        }
+        return usage;
     }
 
     template <typename T>
     Handle SlotList<T>::AddItem( const T &data )
     {
         if (_freelist == _capacity) {
-            printf("TODO: Grow List\n" );
-            fflush(stdout );
+
+            //printf("ERROR:AddItem: Capacity %llu reached!", _capacity );
             assert(0);
             // TODO: Grow list dynamically
         }
